@@ -1,7 +1,9 @@
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+#from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_openai import AzureOpenAIEmbeddings
-    
+from dotenv import load_dotenv
+import os
+
 '''
 embeddings = HuggingFaceEmbeddings(
     model="BAAI/bge-base-en-v1.5"
@@ -11,8 +13,8 @@ embeddings = HuggingFaceEmbeddings(
 embeddings = AzureOpenAIEmbeddings(
     deployment="text-embedding-3-small", 
     model="text-embedding-3-small",
-    azure_endpoint="",
-    api_key="",
+    azure_endpoint=os.getenv("OPENAI_EMBEDDINGS_ENDPOINT"),
+    api_key=os.getenv("OPENAI_API"),
     api_version="2024-02-01"
 )
 

@@ -1,11 +1,22 @@
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnableSequence
 from langchain_openai import AzureChatOpenAI 
 from vector import retriever
+import os
 
 app = FastAPI()
+
+# Add CORS middleware to allow requests from any origin (e.g., localhost HTML)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # can specify exact origins instead of "*" for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Input model
 class QueryInput(BaseModel):
@@ -36,8 +47,8 @@ prompt = PromptTemplate(
 llm = AzureChatOpenAI(
     deployment_name="gpt-4.1-mini",
     temperature=0.7,
-    azure_endpoint="",
-    api_key="",
+    azure_endpoint=os.getenv("OPENAI_CHAT_ENDPOINT"),
+    api_key=os.getenv("OPENAI_API"),
     api_version="2024-12-01-preview"
 )
 

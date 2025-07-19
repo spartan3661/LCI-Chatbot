@@ -1,20 +1,26 @@
-import requests
+from langchain_openai import AzureOpenAIEmbeddings
+import os
+from dotenv import load_dotenv
 
-# Replace with your actual endpoint
-url = "https://rag-chatbot.salmonbeach-1665fbca.eastus.azurecontainerapps.io/ask"
+load_dotenv()  # Make sure .env is loaded
 
-# Your request data
-payload = {
-    "question": "What is life?"
-}
+# Create the embedding client
+embeddings = AzureOpenAIEmbeddings(
+    deployment="text-embedding-3-small",
+    model="text-embedding-3-small",
+    azure_endpoint=os.getenv("openai-embeddings-endpoint"),
+    api_key=os.getenv("openai-embeddings"),
+    api_version="2024-02-01"
+)
 
-# Make the POST request
-response = requests.post(url, json=payload)
+# Test string
+texts = ["Hello world!"]
 
-# Check if it succeeded
-if response.status_code == 200:
-    print("Success!")
-    print("Response:", response.json())
-else:
-    print("Error:", response.status_code)
-    print("Message:", response.text)
+# Try embedding
+try:
+    result = embeddings.embed_documents(texts)
+    print("✅ Embedding successful!")
+    print("Embedding vector:", result[0][:10], "...")  # Show first 10 dimensions
+except Exception as e:
+    print("❌ Embedding failed:")
+    print(e)

@@ -2,6 +2,8 @@ from langchain.prompts import PromptTemplate
 from langchain_core.runnables import RunnableSequence
 from langchain_openai import AzureChatOpenAI 
 from vector import retriever
+from dotenv import load_dotenv
+import os
 
 prompt = PromptTemplate(
     input_variables=["context", "question"],
@@ -19,8 +21,8 @@ Question:
 llm = AzureChatOpenAI(
     deployment_name="gpt-4.1-mini",
     temperature=0.7,
-    azure_endpoint="",
-    api_key="",
+    azure_endpoint=os.getenv("OPENAI_CHAT_ENDPOINT"),
+    api_key=os.getenv("OPENAI_API"),
     api_version="2024-12-01-preview"
 )
 

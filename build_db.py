@@ -1,28 +1,19 @@
-
-#from langchain_huggingface import HuggingFaceEmbeddings
+from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain_openai import AzureOpenAIEmbeddings
-
 from langchain_core.documents import Document
 import pandas as pd
+import os
+
+load_dotenv() 
 
 embeddings = AzureOpenAIEmbeddings(
     deployment="text-embedding-3-small",
     model="text-embedding-3-small",
-    azure_endpoint="",
-    api_key="",
+    azure_endpoint=os.getenv("OPENAI_EMBEDDINGS_ENDPOINT"),
+    api_key=os.getenv("OPENAI_API"),
     api_version="2024-02-01"
 )
-
-"""
-vector = embeddings.embed_query("This is a test.")
-print(vector)
-
-embeddings = HuggingFaceEmbeddings(
-    model="BAAI/bge-base-en-v1.5"
-)
-"""
-
 
 df = pd.read_csv("wordpress_posts.csv")
 

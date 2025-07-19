@@ -5,3 +5,4 @@ langchain-community
 langchain_chroma
 langchain_openai
 pandas
+python-dotenv
