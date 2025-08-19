@@ -1,41 +1,20 @@
-from langchain.prompts import PromptTemplate
-from langchain_core.runnables import RunnableSequence
-from langchain_openai import AzureChatOpenAI 
-from vector import retriever
 from dotenv import load_dotenv
-import os
+load_dotenv() 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from api.routes import router
 
-prompt = PromptTemplate(
-    input_variables=["context", "question"],
-    template="""
-You are a helpful assistant. Use the following context to answer the question.
+app = FastAPI()
 
-Context:
-{context}
-
-Question:
-{question}
-"""
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://libertarianchristians.com/",
+        "https://stg-libertarianchristians-staging.kinsta.cloud/"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-llm = AzureChatOpenAI(
-    deployment_name="gpt-4.1-mini",
-    temperature=0.7,
-    azure_endpoint=os.getenv("OPENAI_CHAT_ENDPOINT"),
-    api_key=os.getenv("OPENAI_API"),
-    api_version="2024-12-01-preview"
-)
-
-question = "What are the core beliefs of Libertarian Christianity?"
-
-chain = prompt | llm
-
-retrieved_docs = retriever.invoke(question)
-context = "\n\n".join([doc.page_content for doc in retrieved_docs])
-
-response = chain.invoke({
-
-    "context": context,
-    "question": question
-})
-print(response.content)
+app.include_router(router)
