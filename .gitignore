@@ -20,3 +20,4 @@ test.py
 .env
 *.pid
 *.seed
+.python-version
