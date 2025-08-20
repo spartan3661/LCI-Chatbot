@@ -1,0 +1,22 @@
+# --------------------------------
+# Misc
+__pycache__/
+*.py[cod]
+*.pyo
+.vscode/
+.DS_Store
+Thumbs.db
+.venv/
+venv/
+
+# Dir
+.git/
+
+# Individual Files
+wordpress_posts.csv
+temp.txt
+test.py
+
+.env
+.gitignore
+README.MD

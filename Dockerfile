@@ -1,18 +1,22 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
-# Set work directory
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential curl \
+ && rm -rf /var/lib/apt/lists/*
+
+# work directory
 WORKDIR /app
 
-# Copy project files
-COPY app.py vector.py requirements.txt /app/
-COPY chroma_langchain_db/ /app/chroma_langchain_db/
+COPY . /app/
 
-# Install dependencies
 RUN pip install --no-cache-dir --upgrade pip \
  && pip install --no-cache-dir -r requirements.txt
 
-# Expose the port
-EXPOSE 8000
+# non-root
+RUN useradd -m appuser
+USER appuser
 
-# Start the FastAPI app
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+ENV PORT=8080
+EXPOSE 8080
+
+# start the FastAPI app
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers"]
