@@ -16,7 +16,6 @@ venv/
 wordpress_posts.csv
 temp.txt
 test.py
-
 .env
 .gitignore
 README.MD

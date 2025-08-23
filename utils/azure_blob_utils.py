@@ -6,9 +6,9 @@ conn_str = os.getenv("AZURE_CSV_CONTAINER")
 blob_service_client = BlobServiceClient.from_connection_string(str(conn_str))
 
 
-def log_question(container_name, blob_name, question, time):
+def log_question(container_name, blob_name, question, time, prompted, flagged):
     """Append {time, question} to JSON line in storage blob"""
-    record = {"time": time, "question": question}
+    record = {"time": time, "question": question, "prompted": prompted, "flagged": flagged }
 
     try:
         blob_service_client.create_container(container_name)
