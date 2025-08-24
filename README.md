@@ -2,6 +2,7 @@
 
 ## Overview
 This is the REST endpoint for the LCI website to make chatbot prompt request. This is expected to be dockerized and ran in Azure Container Apps.
+The app will send user inputs to sentiment analysis and content safety before prompting the Azure OpenAI backend.
 
 
 ## Running Locally
